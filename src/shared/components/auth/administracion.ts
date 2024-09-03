@@ -9,7 +9,7 @@ class Administracion extends DefaultModel {
     // eslint-disable-next-line quotes
     const sql = "SELECT tiempo FROM administracion WHERE nombre like '%sesion%'"
     const datos = this.findByQuery(sql).then((res) => {
-      return res[0].tiempo
+      return res[0].tiempo ?? 3600
     })
     return datos
   }

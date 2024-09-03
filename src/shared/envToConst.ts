@@ -24,6 +24,7 @@ export const envToConst = {
   DB_HOST: validateEnv('DB_HOST'),
   DB_PORT: validateEnv('DB_PORT'),
   DB_NAME: validateEnv('DB_NAME'),
+  DB_SCHEMA: validateEnv('DB_SCHEMA'),
   SALTOS: validateEnv('SALTOS'),
   JWT_SECRET: validateEnv('JWT_SECRET'),
   RESEND_KEY: validateEnv('RESEND_KEY'),

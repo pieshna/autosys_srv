@@ -13,7 +13,12 @@ const connection = new Pool({
 })
 
 connection.on('connect', (client) => {
-  client.query('SET search_path TO edusafe')
+  client.query(`CREATE SCHEMA IF NOT EXISTS ${envToConst.DB_SCHEMA}`)
+  client.query(`SET search_path TO ${envToConst.DB_SCHEMA}`)
+})
+
+connection.on('error', (err) => {
+  console.error('Error en la conexión a la base de datos', err)
 })
 
 export type connectionType = Pool
