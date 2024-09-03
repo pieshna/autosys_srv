@@ -2,7 +2,7 @@ import { DefaultModel } from '../../models/postgres/defaultModel'
 
 class Auth extends DefaultModel {
   constructor() {
-    super('usuario')
+    super('usuarios')
   }
 
   async findByFieldOnlyOne(field: string, value: string): Promise<any> {
@@ -10,7 +10,7 @@ class Auth extends DefaultModel {
     if (result[0]) {
       const userId = result[0].id
       const rol = await this.findByQuery(
-        `SELECT r.name as nombre, rol_id FROM rol as r left join usuario_rol as ur
+        `SELECT r.name as nombre, rol_id FROM roles as r left join usuario_rol as ur
         on r.id = ur.rol_id where ur.usuario_id = $1`,
         [userId]
       )

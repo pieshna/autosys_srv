@@ -16,7 +16,7 @@ const tiempoParaToken = async () => {
 }
 
 const getUser = async (correo: string, isNew = false) => {
-  const user = await authModel.findByFieldOnlyOne('email', correo)
+  const user = await authModel.findByFieldOnlyOne('correo', correo)
   const username = await authModel.findByFieldOnlyOne('username', correo)
   if (!user && !username && !isNew) {
     throw new Error('Usuario no encontrado')
@@ -49,7 +49,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
-  const { correo, password, usuario: username } = req.body
+  const { correo, password, usuario: username, nombre, apellido } = req.body
   const tiempoToken = await tiempoParaToken()
 
   const existingUser = await getUser(correo, true)
@@ -60,10 +60,11 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   req.body.password = await hashString(password)
 
   const obj = {
-    email: correo,
-    username: username,
+    correo,
+    username,
     password: req.body.password,
-    creado_por: req.body.creado_por
+    nombre,
+    apellido
   }
 
   const [user] = await authModel.create(obj)

@@ -3,6 +3,8 @@ import { z } from 'zod'
 export const authSchemaRegister = z.object({
   id: z.string().uuid().optional(),
   correo: z.string().email(),
+  nombre: z.string().max(255),
+  apellido: z.string().max(255),
   usuario: z.string().max(20),
   password: z.string().max(255),
   estado: z.boolean().optional(),

@@ -8,9 +8,13 @@ class Administracion extends DefaultModel {
   getTiempoToken() {
     // eslint-disable-next-line quotes
     const sql = "SELECT tiempo FROM administracion WHERE nombre like '%sesion%'"
-    const datos = this.findByQuery(sql).then((res) => {
-      return res[0].tiempo ?? 3600
-    })
+    const datos = this.findByQuery(sql)
+      .then((res) => {
+        return res[0].tiempo
+      })
+      .catch(() => {
+        return 3600
+      })
     return datos
   }
 }
