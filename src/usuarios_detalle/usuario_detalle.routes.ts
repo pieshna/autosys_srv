@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { schemaValidation } from '../../shared/middleware/schema'
+import { schemaValidation } from '../shared/middleware/schema'
 import {
   createUsuarioDetalle,
   deleteUsuarioDetalle,

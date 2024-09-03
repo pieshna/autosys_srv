@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { asyncHandler } from '../../shared/middleware/contollers'
-import { handleDataAndResponse } from '../../shared/tools/validateDataToResponse'
+import { asyncHandler } from '../shared/middleware/contollers'
+import { handleDataAndResponse } from '../shared/tools/validateDataToResponse'
 import usuarioDireccionModel from './usuario_detalle.model'
 
 export const getUsuariosDetalle = asyncHandler(

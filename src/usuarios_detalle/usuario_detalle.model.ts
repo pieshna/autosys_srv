@@ -1,4 +1,4 @@
-import { DefaultModel } from '../../shared/models/postgres/defaultModel'
+import { DefaultModel } from '../shared/models/postgres/defaultModel'
 
 class UsuarioDetalleModel extends DefaultModel {
   constructor() {

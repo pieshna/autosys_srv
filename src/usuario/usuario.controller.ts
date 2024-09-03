@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { hashString } from '../../shared/components/auth/encriptar'
-import { asyncHandler } from '../../shared/middleware/contollers'
-import { handleDataAndResponse } from '../../shared/tools/validateDataToResponse'
+import { hashString } from '../shared/components/auth/encriptar'
+import { asyncHandler } from '../shared/middleware/contollers'
+import { handleDataAndResponse } from '../shared/tools/validateDataToResponse'
 import usuarioModel from './usuario.model'
 
 export const getUsuarios = asyncHandler(async (req: Request, res: Response) => {
