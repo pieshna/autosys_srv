@@ -6,22 +6,22 @@ export const schemaValidation =
   (schema: AnyZodObject) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id = req.body.userId
+      //const id = req.body.userId
       if (Array.isArray(req.body)) {
         req.body = req.body.map((obj) => {
           const newBody = schema.parse(obj)
-          if (id) {
+          /*if (id) {
             newBody.creado_por = id
             newBody.actualizado_por = id
-          }
+          }*/
           return newBody
         })
       } else {
         req.body = schema.parse(req.body)
-        if (id) {
+        /*if (id) {
           req.body.creado_por = id
           req.body.actualizado_por = id
-        }
+        }*/
       }
       next()
     } catch (error: any) {
