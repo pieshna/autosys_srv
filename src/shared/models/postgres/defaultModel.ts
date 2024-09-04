@@ -13,8 +13,8 @@ export class DefaultModel {
       const { rows } = await this.connection.query(sql, params)
       return rows
     } catch (e: any) {
-      console.log(e)
-      throw e
+      //console.log(e)
+      throw new Error(e)
     }
   }
 
