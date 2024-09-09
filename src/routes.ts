@@ -11,6 +11,7 @@ import trabajadorRoutes from './trabajadores/trabajador.routes'
 import usuarioRoutes from './usuario/usuario.routes'
 import usuarioRolRoutes from './usuario_rol/usuario_rol.routes'
 import usuarioDetalleRoutes from './usuarios_detalle/usuario_detalle.routes'
+import vehiculoRoutes from './vehiculos/vehiculo.routes'
 
 const router = express.Router()
 
@@ -34,5 +35,6 @@ router.use('/usuario_rol', usuarioRolRoutes)
 router.use('/roles', rolRoutes)
 router.use('/trabajadores', trabajadorRoutes)
 router.use('/clientes', clienteRoutes)
+router.use('/vehiculos', vehiculoRoutes)
 
 export default router
