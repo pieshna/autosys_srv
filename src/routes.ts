@@ -5,6 +5,7 @@ import authRoutes from './shared/endpoints/auth/auth.routes'
 import navRoutes from './shared/endpoints/nav/nav.routes'
 import { authMiddleware } from './shared/middleware/auth'
 // Endpoints del proyecto
+import clienteRoutes from './clientes/cliente.routes'
 import rolRoutes from './roles/rol.routes'
 import trabajadorRoutes from './trabajadores/trabajador.routes'
 import usuarioRoutes from './usuario/usuario.routes'
@@ -32,5 +33,6 @@ router.use('/usuarios_detalle', usuarioDetalleRoutes)
 router.use('/usuario_rol', usuarioRolRoutes)
 router.use('/roles', rolRoutes)
 router.use('/trabajadores', trabajadorRoutes)
+router.use('/clientes', clienteRoutes)
 
 export default router
