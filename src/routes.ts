@@ -9,6 +9,7 @@ import clienteRoutes from './clientes/cliente.routes'
 import repuestoRoutes from './repuestos/repuesto.routes'
 import rolRoutes from './roles/rol.routes'
 import trabajadorRoutes from './trabajadores/trabajador.routes'
+import trabajoRoutes from './trabajos/trabajo.routes'
 import usuarioRoutes from './usuario/usuario.routes'
 import usuarioRolRoutes from './usuario_rol/usuario_rol.routes'
 import usuarioDetalleRoutes from './usuarios_detalle/usuario_detalle.routes'
@@ -38,5 +39,6 @@ router.use('/trabajadores', trabajadorRoutes)
 router.use('/clientes', clienteRoutes)
 router.use('/vehiculos', vehiculoRoutes)
 router.use('/repuestos', repuestoRoutes)
+router.use('/trabajos', trabajoRoutes)
 
 export default router
