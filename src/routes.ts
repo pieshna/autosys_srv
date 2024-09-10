@@ -11,6 +11,7 @@ import repuestoRoutes from './repuestos/repuesto.routes'
 import rolRoutes from './roles/rol.routes'
 import trabajadorRoutes from './trabajadores/trabajador.routes'
 import trabajoRoutes from './trabajos/trabajo.routes'
+import trabajoRepuestoRoutes from './trabajos_repuestos/trabajo_repuesto.routes'
 import usuarioRoutes from './usuario/usuario.routes'
 import usuarioRolRoutes from './usuario_rol/usuario_rol.routes'
 import usuarioDetalleRoutes from './usuarios_detalle/usuario_detalle.routes'
@@ -42,5 +43,6 @@ router.use('/vehiculos', vehiculoRoutes)
 router.use('/repuestos', repuestoRoutes)
 router.use('/trabajos', trabajoRoutes)
 router.use('/registro_tiempos', registroTiemposRoutes)
+router.use('/trabajos_repuestos', trabajoRepuestoRoutes)
 
 export default router
