@@ -19,11 +19,11 @@ class NavModel extends DefaultModel {
     WITH RECURSIVE navbarWithParentTitle AS (
       SELECT
           n.id,
-          n.title,
-          n.link,
-          n.icon,
+          n.titulo as title,
+          n.url,
+          n.icono as icon,
           n.parent_id,
-          CAST('' AS CHAR(255)) AS parent_title,
+          CAST('' AS text) AS parent_title,
           n.created_at,
           n.updated_at
       FROM
@@ -33,9 +33,9 @@ class NavModel extends DefaultModel {
       UNION ALL
       SELECT
           n.id,
-          n.title,
-          concat(nwp.link,n.link) as link,
-          n.icon,
+          n.titulo as title,
+          concat(nwp.url,n.url) as link,
+          n.icono as icono,
           n.parent_id,
           nwp.title AS parent_title,
           n.created_at,
@@ -47,7 +47,7 @@ class NavModel extends DefaultModel {
   )
   SELECT nwp.id AS id,
       nwp.title,
-      nwp.link,
+      nwp.url as link,
       nwp.icon,
       nwp.parent_id AS parent_id,
       nwp.parent_title,
@@ -66,25 +66,25 @@ class NavModel extends DefaultModel {
     WITH RECURSIVE navbarWithParentTitle AS (
       SELECT
           n.id,
-          n.title,
-          CAST(n.link AS VARCHAR(255)) as link,
-          n.icon,
+          n.titulo as title,
+          CAST(n.url AS TEXT) as link,
+          n.icono as icon,
           n.parent_id,
-          CAST(n.title AS VARCHAR(255)) AS parent_title,
+          CAST(n.titulo AS TEXT) AS parent_title,
           n.created_at,
           n.updated_at
       FROM
-          navbar n
+          navbar as n
       WHERE
           n.parent_id IS NULL
       UNION ALL
       SELECT
           n.id,
-          n.title,
-          CAST(nwp.link || n.link AS VARCHAR(255)) as link,
-          n.icon,
+          n.titulo as title,
+          CAST(nwp.link || n.url AS TEXT) as link,
+          n.icono as icon,
           n.parent_id,
-          CAST(nwp.title AS VARCHAR(255)) AS parent_title,
+          CAST(nwp.title AS TEXT) AS parent_title,
           n.created_at,
           n.updated_at
       FROM
@@ -118,11 +118,11 @@ class NavModel extends DefaultModel {
     WITH RECURSIVE navbarWithParentTitle AS (
       SELECT
           n.id,
-          n.title,
-          CAST(n.link AS VARCHAR(255)) as link,
-          n.icon,
+          n.titulo as title,
+          CAST(n.url AS TEXT) as link,
+          n.icono as icon,
           n.parent_id,
-          CAST(n.title AS VARCHAR(255)) AS parent_title,
+          CAST(n.titulo as title AS TEXT) AS parent_title,
           n.created_at,
           n.updated_at
       FROM
@@ -132,11 +132,11 @@ class NavModel extends DefaultModel {
       UNION ALL
       SELECT
           n.id,
-          n.title,
-          CAST(nwp.link || n.link AS VARCHAR(255)) as link,
-          n.icon,
+          n.titulo as title,
+          CAST(nwp.url || n.url AS TEXT) as link,
+          n.icono as icon,
           n.parent_id,
-          CAST(nwp.title AS VARCHAR(255)) AS parent_title,
+          CAST(nwp.title AS TEXT) AS parent_title,
           n.created_at,
           n.updated_at
       FROM
@@ -146,8 +146,8 @@ class NavModel extends DefaultModel {
   )
   SELECT nwp.id AS id,
       nwp.title,
-      nwp.link,
-      nwp.icon,
+      nwp.url as link,
+      nwp.icono as icon,
       nwp.parent_id AS parent_id,
       nwp.parent_title,
       nwp.created_at,
@@ -167,11 +167,11 @@ class NavModel extends DefaultModel {
     WITH RECURSIVE navbarWithParentTitle AS (
       SELECT
           n.id,
-          n.title,
-          CAST(n.link AS VARCHAR(255)) as link,
-          n.icon,
+          n.titulo as title,
+          CAST(n.url AS TEXT) as link,
+          n.icono as icon,
           n.parent_id,
-          CAST(n.title AS VARCHAR(255)) AS parent_title,
+          CAST(n.titulo as title AS TEXT) AS parent_title,
           n.created_at,
           n.updated_at
       FROM
@@ -181,11 +181,11 @@ class NavModel extends DefaultModel {
       UNION ALL
       SELECT
           n.id,
-          n.title,
-          CAST(nwp.link || n.link AS VARCHAR(255)) as link,
-          n.icon,
+          n.titulo as title,
+          CAST(nwp.url || n.url AS TEXT) as link,
+          n.icono as icon,
           n.parent_id,
-          CAST(nwp.title AS VARCHAR(255)) AS parent_title,
+          CAST(nwp.title AS TEXT) AS parent_title,
           n.created_at,
           n.updated_at
       FROM
@@ -195,8 +195,8 @@ class NavModel extends DefaultModel {
   )
   SELECT nwp.id AS id,
       nwp.title,
-      nwp.link,
-      nwp.icon,
+      nwp.url as link,
+      nwp.icono as icon,
       nwp.parent_id AS parent_id,
       nwp.parent_title,
       nwp.created_at,

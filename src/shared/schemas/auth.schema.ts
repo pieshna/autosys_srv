@@ -5,9 +5,8 @@ export const authSchemaRegister = z.object({
   correo: z.string().email(),
   nombre: z.string().max(255),
   apellido: z.string().max(255),
-  usuario: z.string().max(20),
+  username: z.string().max(20),
   password: z.string().max(255),
-  estado: z.boolean().optional(),
   created_at: z.date().optional(),
   updated_at: z.date().optional()
 })
