@@ -16,6 +16,7 @@ import usuarioRoutes from './usuario/usuario.routes'
 import usuarioRolRoutes from './usuario_rol/usuario_rol.routes'
 import usuarioDetalleRoutes from './usuarios_detalle/usuario_detalle.routes'
 import valeRoutes from './vales/vale.routes'
+import valeTrabajoRoutes from './vales_trabajos/vale_trabajo.routes'
 import vehiculoRoutes from './vehiculos/vehiculo.routes'
 
 const router = express.Router()
@@ -46,5 +47,6 @@ router.use('/trabajos', trabajoRoutes)
 router.use('/registro_tiempos', registroTiemposRoutes)
 router.use('/trabajos_repuestos', trabajoRepuestoRoutes)
 router.use('/vales', valeRoutes)
+router.use('/vales_trabajos', valeTrabajoRoutes)
 
 export default router
