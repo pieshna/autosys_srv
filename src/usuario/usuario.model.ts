@@ -96,6 +96,17 @@ class UsuarioModel extends DefaultModel {
     `
     return await super.findByQuery(sql, [id])
   }
+
+  async create(json: any): Promise<any[]> {
+    const { rol_id, ...rest } = json
+    const res = await super.create(rest)
+    const res2 = await super.findByQuery(
+      `
+      insert into usuario_rol (usuario_id, rol_id) values ($1, $2) returning *`,
+      [res[0].id, rol_id]
+    )
+    return [...res, ...res2]
+  }
 }
 
 export default new UsuarioModel()
