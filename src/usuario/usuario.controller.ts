@@ -38,7 +38,7 @@ export const createNewUsuarioWithDetails = asyncHandler(
 export const updateUsuario = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params
-    req.body.password = hashString(req.body.password)
+    if (req.body.password) req.body.password = hashString(req.body.password)
     const usuario = await usuarioModel.update(id, req.body)
     handleDataAndResponse(res, usuario)
   }

@@ -27,12 +27,12 @@ class UsuarioModel extends DefaultModel {
       select 
       u.id,
       u.username,
-      ud.nombre,
-      ud.apellido,
+      u.nombre,
+      u.apellido,
       u.correo,
       u.created_at,
       u.updated_at
-      from usuario as u
+      from usuarios as u
       left join usuario_detalle as ud on u.id = ud.usuario_id
       where u.id = $1
     `
@@ -104,6 +104,17 @@ class UsuarioModel extends DefaultModel {
       `
       insert into usuario_rol (usuario_id, rol_id) values ($1, $2) returning *`,
       [res[0].id, rol_id]
+    )
+    return [...res, ...res2]
+  }
+
+  async update(id: string, json: any): Promise<any[]> {
+    const { rol_id, ...rest } = json
+    const res = await super.update(id, rest)
+    const res2 = await super.findByQuery(
+      `
+      update usuario_rol set rol_id = $1 where usuario_id = $2 returning *`,
+      [rol_id, id]
     )
     return [...res, ...res2]
   }
