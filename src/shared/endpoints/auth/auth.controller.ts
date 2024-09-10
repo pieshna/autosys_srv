@@ -49,7 +49,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
-  const { correo, password, usuario: username, nombre, apellido } = req.body
+  const { correo, password, username, nombre, apellido } = req.body
   const tiempoToken = await tiempoParaToken()
 
   const existingUser = await getUser(correo, true)
