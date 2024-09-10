@@ -3,26 +3,21 @@ import { DefaultModel } from '../shared/models/postgres/defaultModel'
 
 class UsuarioModel extends DefaultModel {
   constructor() {
-    super('usuario')
+    super('usuarios')
   }
 
   async findAll() {
     const sql = `
       select 
-      usuario.id,
+      u.id,
       username,
       nombre,
       apellido,
-      email,
-      estado,
-      (select nombre from usuario_detalle where usuario_id = 
-      (coalesce(creado_por, usuario_detalle.creado_por))) as creado_por,
-      (select nombre from usuario_detalle where usuario_id = 
-      (coalesce(actualizado_por, usuario_detalle.actualizado_por))) as actualizado_por,
-      usuario.created_at,
-      usuario.updated_at
-      from usuario
-      left join usuario_detalle on usuario.id = usuario_detalle.usuario_id
+      correo,
+      u.created_at,
+      u.updated_at
+      from usuarios as u
+      left join usuario_detalle as ud on u.id = ud.usuario_id
       `
     return await super.findByQuery(sql)
   }
@@ -34,11 +29,7 @@ class UsuarioModel extends DefaultModel {
       u.username,
       ud.nombre,
       ud.apellido,
-      u.email,
-      (select nombre from usuario_detalle where usuario_id = 
-      (coalesce(u.creado_por, ud.creado_por))) as creado_por,
-      (select nombre from usuario_detalle where usuario_id = 
-      (coalesce(u.actualizado_por, ud.actualizado_por))) as actualizado_por,
+      u.correo,
       u.created_at,
       u.updated_at
       from usuario as u
@@ -97,7 +88,7 @@ class UsuarioModel extends DefaultModel {
       ud.foto,
       udi.direccion,
       ut.telefono
-      FROM usuario as u
+      FROM usuarios as u
       LEFT JOIN usuario_detalle as ud ON u.id = ud.usuario_id
       LEFT JOIN usuario_direccion as udi ON u.id = udi.usuario_id
       LEFT JOIN usuario_telefono as ut ON u.id = ut.usuario_id

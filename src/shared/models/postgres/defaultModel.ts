@@ -52,7 +52,6 @@ export class DefaultModel {
    * @returns objeto con el registro creado
    */
   async create(json: any) {
-    if (json.hasOwnProperty('actualizado_por')) delete json.actualizado_por
     const data = addCreatedAt(json)
     const keys = Object.keys(data)
     const values = Object.values(data)
@@ -116,7 +115,6 @@ export class DefaultModel {
    * @returns objeto con el registro actualizado
    */
   async update(id: string, json: any) {
-    if (json.hasOwnProperty('creado_por')) delete json.creado_por
     const data = addCreatedAt(json)
     const keys = Object.keys(data)
     const values = Object.values(data)
