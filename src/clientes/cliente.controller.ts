@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { asyncHandler } from '../shared/middleware/contollers'
 import { handleDataAndResponse } from '../shared/tools/validateDataToResponse'
+import usuarioModel from '../usuario/usuario.model'
 import ClienteModel from './cliente.model'
 
 export const getClientes = asyncHandler(async (req: Request, res: Response) => {
@@ -16,8 +17,15 @@ export const getCliente = asyncHandler(async (req: Request, res: Response) => {
 
 export const createCliente = asyncHandler(
   async (req: Request, res: Response) => {
-    const cliente = await ClienteModel.create(req.body)
-    handleDataAndResponse(res, cliente)
+    const { usuario_id, ...resto } = req.body
+    if (usuario_id) {
+      const cliente = await ClienteModel.create({ usuario_id })
+      handleDataAndResponse(res, cliente)
+    } else {
+      const usuario = await usuarioModel.create(resto)
+      const cliente = await ClienteModel.create({ usuario_id: usuario[0].id })
+      handleDataAndResponse(res, cliente)
+    }
   }
 )
 
