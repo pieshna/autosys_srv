@@ -1,6 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 import connection, { connectionType } from '../../db/postgres/connection'
-import { addCreatedAt } from '../../tools/datesTools'
+import { addCreatedAt, addUpdatedAt } from '../../tools/datesTools'
 
 export class DefaultModel {
   private connection: connectionType
@@ -115,7 +115,7 @@ export class DefaultModel {
    * @returns objeto con el registro actualizado
    */
   async update(id: string, json: any) {
-    const data = addCreatedAt(json)
+    const data = addUpdatedAt(json)
     const keys = Object.keys(data)
     const values = Object.values(data)
 
