@@ -50,7 +50,7 @@ class ClienteModel extends DefaultModel {
     )
     return await super.findByQuery(
       'update usuarios set nombre = $1, apellido = $2, correo = $3 where id = $4',
-      [data.nombre, data.apellido, data.correo, usuario[0].usuario_id]
+      [data.nombre, data.apellido, data.correo ?? '', usuario[0].usuario_id]
     )
   }
 }
