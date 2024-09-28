@@ -100,6 +100,7 @@ class UsuarioModel extends DefaultModel {
   async create(json: any): Promise<any[]> {
     const { rol_id, ...rest } = json
     const res = await super.create(rest)
+    if (!rol_id) return res
     const res2 = await super.findByQuery(
       `
       insert into usuario_rol (usuario_id, rol_id) values ($1, $2) returning *`,
