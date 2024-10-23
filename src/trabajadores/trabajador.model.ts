@@ -56,8 +56,8 @@ class TrabajadorModel extends DefaultModel {
       [json.especialidad ?? '', json.porcentaje, id]
     )
     return await super.findByQuery(
-      'update usuarios set nombre = $1, apellido = $2, correo = $3 where id = $4',
-      [json.nombre, json.apellido, json.correo ?? '', usuario[0].usuario_id]
+      'update usuarios set nombre = $1, apellido = $2 where id = $3',
+      [json.nombre, json.apellido, usuario[0].usuario_id]
     )
   }
 }
