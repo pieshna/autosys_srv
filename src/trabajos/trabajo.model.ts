@@ -54,7 +54,7 @@ class TrabajosModel extends DefaultModel {
     const sql = `
     select
     concat(u.nombre, ' ', u.apellido) as trabajador, 
-    sum(t.total_pagar * (tr.porcentaje * 0.01)) as pago_trabajador
+    coalesce(sum(t.total_pagar * (tr.porcentaje * 0.01)),0.00) as pago_trabajador
     from trabajos as t
     join trabajadores as tr on tr.id = t.trabajador_id
     join usuarios as u on u.id = tr.usuario_id
