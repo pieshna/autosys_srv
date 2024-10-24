@@ -3,6 +3,7 @@ import { schemaValidation } from '../shared/middleware/schema'
 import {
   createTrabajo,
   deleteTrabajo,
+  getDataForRecibo,
   getTrabajo,
   getTrabajos,
   getTrabajosDisponibles,
@@ -17,6 +18,7 @@ const router = Router()
 router.get('/', getTrabajos)
 router.get('/semana', getTrabajosPorSemana)
 router.get('/disponibles', getTrabajosDisponibles)
+router.get('/recibo/:id', getDataForRecibo)
 router.get('/:id', getTrabajo)
 router.post('/', schemaValidation(trabajoSchema), createTrabajo)
 router.put('/', updateProceso)

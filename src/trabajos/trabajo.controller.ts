@@ -58,6 +58,7 @@ export const getTrabajosDisponibles = asyncHandler(
 
 export const updateProceso = asyncHandler(
   async (req: Request, res: Response) => {
+    const resTerminado: any[] = []
     req.body.map(async (t: any) => {
       const id = await registro_tiemposModel.findByField('trabajo_id', t.id)
       if (t.parent === 'En Proceso') {
@@ -65,11 +66,20 @@ export const updateProceso = asyncHandler(
           hora_inicio: new Date()
         })
       } else if (t.parent === 'Terminado') {
-        await registro_tiemposModel.update(id[0].id, {
+        const res = await registro_tiemposModel.update(id[0].id, {
           hora_finalizacion: new Date()
         })
+        resTerminado.push(res)
       }
     })
-    handleDataAndResponse(res, 'Proceso Actualizado')
+    handleDataAndResponse(res, resTerminado)
+  }
+)
+
+export const getDataForRecibo = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params
+    const trabajo = await TrabajoModel.getDataForRecibo(id)
+    handleDataAndResponse(res, trabajo)
   }
 )

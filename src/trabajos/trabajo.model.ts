@@ -1,5 +1,15 @@
 import { DefaultModel } from '../shared/models/postgres/defaultModel'
 
+interface datosRecibo {
+  nombre: string
+  fecha?: string
+  productos: {
+    nombre: string
+    cantidad: number
+    precio: number
+  }[]
+}
+
 class TrabajosModel extends DefaultModel {
   constructor() {
     super('trabajos')
@@ -126,6 +136,77 @@ class TrabajosModel extends DefaultModel {
         parent: r.hora_inicio ? 'En Proceso' : null
       }
     })
+  }
+
+  async getDataForRecibo(uuidTrabajo: string) {
+    const sql = `
+    select
+    concat( u.nombre, ' ', u.apellido ) as cliente,
+    ve.placa,
+    ve.modelo,
+    ve.marca,
+    t.descripcion,
+    t.diagnostico_mecanico,
+    t.total_pagar,
+    t.fecha
+    from trabajos as t
+    join vehiculos as ve on ve.id = t.vehiculo_id
+    join clientes as c on c.id = ve.cliente_id
+    join usuarios as u on u.id = c.usuario_id
+    where t.id = $1
+    `
+    const res = await this.findByQuery(sql, [uuidTrabajo])
+
+    const sqlVales = `
+    select
+    r.nombre as repuesto,
+    tr.cantidad as cantidad_repuesto,
+    r.precio as precio_repuesto
+    from trabajos_repuestos as tr
+    join repuestos as r on r.id = tr.repuesto_id
+    where tr.trabajo_id = $1
+    `
+    const vales = await this.findByQuery(sqlVales, [uuidTrabajo])
+
+    const sqlValesVale = `
+    select
+    r.nombre as repuesto_vale,
+    v.cantidad as cantidad_repuesto_vale,
+    v.precio as precio_repuesto_vale
+    from vales_trabajos as tv
+    join vales as v on v.id = tv.vale_id
+    join repuestos as r on r.id = v.repuesto_id
+    where tv.trabajo_id = $1
+    `
+    const valesVale = await this.findByQuery(sqlValesVale, [uuidTrabajo])
+
+    const resVales = [...vales, ...valesVale, ...res]
+
+    //parse res to datosRecibo
+    const result = {
+      nombre: res[0].cliente,
+      marca: res[0].marca,
+      modelo: res[0].modelo,
+      placa: res[0].placa,
+      fecha: res[0].fecha
+        .toISOString()
+        .split('T')[0]
+        .split('-')
+        .reverse()
+        .join('/'),
+      productos: resVales.map((r) => {
+        return {
+          nombre:
+            r.diagnotico_mecanico ??
+            r.descripcion ??
+            r.repuesto ??
+            r.repuesto_vale + ' (Vale)',
+          cantidad: r.cantidad_repuesto ?? r.cantidad_repuesto_vale ?? 1,
+          precio: r.precio_repuesto ?? r.precio_repuesto_vale ?? r.total_pagar
+        }
+      })
+    }
+    return result
   }
 }
 
