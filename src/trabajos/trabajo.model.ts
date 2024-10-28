@@ -51,49 +51,63 @@ class TrabajosModel extends DefaultModel {
   }
 
   async getTrabajosPorSemana() {
-    const sql = `
-    select
-    concat(u.nombre, ' ', u.apellido) as trabajador, 
-    coalesce(sum(t.total_pagar * (tr.porcentaje * 0.01)),0.00) as pago_trabajador
-    from trabajos as t
-    join trabajadores as tr on tr.id = t.trabajador_id
-    join usuarios as u on u.id = tr.usuario_id
-    where t.fecha >= now() - interval '1 month'
-    group by trabajador
-    order by trabajador
-    `
+    // Consulta para obtener el número de trabajos por cada semana en el último mes
     const sql2 = `
-    with semanas as (
+      with semanas as (
+        select
+          t.id,
+          date_trunc('week', t.fecha) as semana_inicio
+        from trabajos as t
+        where t.fecha >= now() - interval '1 month'
+      ),
+      semanas_numeradas as (
+        select
+          semana_inicio,
+          row_number() over (order by semana_inicio) as semana_consecutiva,
+          extract(month from semana_inicio) as mes
+        from semanas
+        group by semana_inicio
+      )
       select
-        t.id,
-        date_trunc('week', t.fecha) as semana_inicio
-      from trabajos as t
-      where t.fecha >= now() - interval '1 month'
-    ),
-    semanas_numeradas as (
-      select
-        semana_inicio,
-        row_number() over (order by semana_inicio) as semana_consecutiva,
-        extract(month from semana_inicio) as mes
-      from semanas
-      group by semana_inicio
-    )
-    select
-      count(s.id) as trabajos,
-      
-      sn.semana_consecutiva as semana,
-      sn.mes
-    from semanas as s
-    join semanas_numeradas as sn
-    on s.semana_inicio = sn.semana_inicio
-    group by sn.semana_consecutiva, sn.mes
-    order by sn.semana_consecutiva
+        count(s.id) as trabajos,
+        sn.semana_consecutiva as semana,
+        sn.mes
+      from semanas as s
+      join semanas_numeradas as sn
+        on s.semana_inicio = sn.semana_inicio
+      group by sn.semana_consecutiva, sn.mes
+      order by sn.semana_consecutiva
     `
+
+    // Consulta para calcular el pago semanal por trabajador en el último mes
+    const sql = `
+      with semanas as (
+        select
+          t.id,
+          date_trunc('week', t.fecha) as semana_inicio, -- Define el inicio de la semana
+          concat(u.nombre, ' ', u.apellido) as trabajador,
+          (t.total_pagar * (tr.porcentaje * 0.01)) as pago_trabajador
+        from trabajos as t
+        join trabajadores as tr on tr.id = t.trabajador_id
+        join usuarios as u on u.id = tr.usuario_id
+        where t.fecha >= now() - interval '1 month'
+      )
+      select
+        trabajador,
+        semana_inicio,
+        coalesce(sum(pago_trabajador), 0.00) as pago_trabajador -- Suma el pago por trabajador por semana
+      from semanas
+      where semana_inicio >= now() - interval '1 week'
+      group by trabajador, semana_inicio
+      order by trabajador, semana_inicio
+    `
+
+    // Ejecuta ambas consultas
     const semanas = await this.findByQuery(sql2)
     const pagos = await this.findByQuery(sql)
 
+    // Retorna el resultado en un objeto
     const res = { semanas, pagos }
-
     return res
   }
 
