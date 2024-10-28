@@ -23,6 +23,7 @@ export const getMyData = asyncHandler(async (req: Request, res: Response) => {
 
 export const createUsuario = asyncHandler(
   async (req: Request, res: Response) => {
+    if (req.body.password) req.body.password = hashString(req.body.password)
     const usuario = await usuarioModel.create(req.body)
     handleDataAndResponse(res, usuario)
   }
@@ -30,6 +31,7 @@ export const createUsuario = asyncHandler(
 
 export const createNewUsuarioWithDetails = asyncHandler(
   async (req: Request, res: Response) => {
+    if (req.body.password) req.body.password = hashString(req.body.password)
     const usuario = await usuarioModel.newUserWithDetail(req.body)
     handleDataAndResponse(res, usuario)
   }

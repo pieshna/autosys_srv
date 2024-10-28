@@ -16,7 +16,7 @@ class Auth extends DefaultModel {
       )
       result[0].usuario_id = result[0].id
       result[0].rol_id = rol[0]?.rol_id
-      result[0].rol = rol[0]?.nombre
+      result[0].rol = rol[0]?.nombre?.toUpperCase()
     }
     return result[0]
   }
