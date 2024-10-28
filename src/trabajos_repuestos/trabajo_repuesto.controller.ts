@@ -20,7 +20,7 @@ export const getTrabajoRepuesto = asyncHandler(
 
 export const createTrabajoRepuesto = asyncHandler(
   async (req: Request, res: Response) => {
-    const data = await trabajoRepuestoModel.create(req.body)
+    const data = await trabajoRepuestoModel.createMany(req.body['tmp'])
     handleDataAndResponse(res, data)
   }
 )

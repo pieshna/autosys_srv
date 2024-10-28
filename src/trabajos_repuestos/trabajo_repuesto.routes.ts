@@ -13,7 +13,7 @@ const router = Router()
 
 router.get('/', getTrabajoRepuestos)
 router.get('/:id', getTrabajoRepuesto)
-router.post('/', schemaValidation(trabajoRepuestoSchema), createTrabajoRepuesto)
+router.post('/', createTrabajoRepuesto)
 router.put(
   '/:id',
   schemaValidation(trabajoRepuestoSchema),

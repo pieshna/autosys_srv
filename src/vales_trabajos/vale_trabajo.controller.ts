@@ -20,7 +20,7 @@ export const getValeTrabajo = asyncHandler(
 
 export const createValeTrabajo = asyncHandler(
   async (req: Request, res: Response) => {
-    const data = await valeTrabajoModel.create(req.body)
+    const data = await valeTrabajoModel.createMany(req.body['tmp'])
     handleDataAndResponse(res, data)
   }
 )

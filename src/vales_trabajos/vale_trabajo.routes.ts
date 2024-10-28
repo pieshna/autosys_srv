@@ -13,7 +13,7 @@ const router = Router()
 
 router.get('/', getValesTrabajos)
 router.get('/:id', getValeTrabajo)
-router.post('/', schemaValidation(valeTrabajoSchema), createValeTrabajo)
+router.post('/', createValeTrabajo)
 router.put('/:id', schemaValidation(valeTrabajoSchema), updateValeTrabajo)
 router.delete('/:id', deleteValeTrabajo)
 

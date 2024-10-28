@@ -86,6 +86,7 @@ export class DefaultModel {
     const values = conCreatedAt.flatMap((item) =>
       columns.map((column) => {
         if (ids?.includes(column)) return item[column]
+        else if (!ids) return item[column]
       })
     )
 
