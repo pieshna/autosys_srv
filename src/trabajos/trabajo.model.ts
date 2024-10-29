@@ -137,9 +137,9 @@ with semanas as (
   `
 
     // Ejecuta ambas consultas
-    const semanas = await this.findByQuery(sql2)
-    const pagos = await this.findByQuery(sql)
-    const carrosEstado = await this.findByQuery(sqlCarrosEstado)
+    const semanas = (await this.findByQuery(sql2))?.reverse()
+    const pagos = (await this.findByQuery(sql))?.reverse()
+    const carrosEstado = (await this.findByQuery(sqlCarrosEstado))?.reverse()
 
     // Retorna el resultado en un objeto
     const res = { semanas, pagos, carrosEstado }
