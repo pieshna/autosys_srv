@@ -74,9 +74,12 @@ export const createTrabajador = asyncHandler(
 export const updateTrabajador = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params
-    const { telefono, direccion, ...resto } = req.body
+    const { telefono, direccion, dpi, ...resto } = req.body
     const trabajador = await trabajadorModel.update(id, resto)
     const usuario = await trabajadorModel.findById(id)
+    if (dpi) {
+      await usuarioModel.update(usuario[0].usuario_id, { dpi })
+    }
     if (telefono && direccion) {
       const exists = await usuario_detalleModel.findByField(
         'usuario_id',
