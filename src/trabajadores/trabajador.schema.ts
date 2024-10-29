@@ -11,5 +11,6 @@ export const trabajadorSchema = z.object({
   nombre: z.string().max(50).optional(),
   apellido: z.string().max(50).optional(),
   telefono: z.number().optional(),
-  direccion: z.string().max(100).optional()
+  direccion: z.string().max(100).optional(),
+  dpi: z.number().optional()
 })

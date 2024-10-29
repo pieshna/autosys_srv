@@ -13,6 +13,7 @@ class TrabajadorModel extends DefaultModel {
       apellido,
       coalesce(telefono,'Sin teléfono') as telefono,
       coalesce(direccion,'Sin dirección') as direccion,
+      coalesce(u.dpi,'Sin DPI') as dpi,
       especialidad,
       porcentaje,
       t.created_at,
