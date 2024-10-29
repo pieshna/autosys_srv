@@ -17,9 +17,17 @@ class TrabajosModel extends DefaultModel {
 
   async findAll() {
     const sql = `
-    select concat(u.nombre,' ',u.apellido) as trabajador, concat(u2.nombre,' ',u2.apellido) as cliente, v.placa, t.* from
+    select concat(u.nombre,' ',u.apellido) as trabajador, concat(u2.nombre,' ',u2.apellido) as cliente,
+    case
+      when rt.hora_inicio is not null and rt.hora_finalizacion is not null then 'Finalizado'
+      when rt.hora_finalizacion is not null then 'Finalizado'
+      when rt.hora_inicio is not null and rt.hora_finalizacion is null then 'En Proceso'
+      when rt.hora_ingreso is not null and rt.hora_inicio is null then 'En Espera'
+    end as estado,
+     v.placa, t.* from
     trabajos as t
     join trabajadores as tr on tr.id = t.trabajador_id
+    left join registro_tiempos as rt on rt.trabajo_id = t.id
     join usuarios as u on u.id = tr.usuario_id
     join vehiculos as v on v.id = t.vehiculo_id
     join clientes as c on c.id = v.cliente_id

@@ -183,7 +183,7 @@ export class DefaultModel {
    * @returns array de objetos
    */
   async findByQuery(sql: string, params?: any[]) {
-    return this.query(sql, params)
+    return (await this.query(sql, params))?.reverse()
   }
 
   /**
