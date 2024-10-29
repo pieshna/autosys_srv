@@ -110,12 +110,39 @@ class TrabajosModel extends DefaultModel {
       order by trabajador, semana_inicio
     `
 
+    const sqlCarrosEstado = `
+    
+with semanas as (
+        select
+          t.id,
+          date_trunc('week', t.fecha) as semana_inicio, -- Define el inicio de la semana
+           case
+          when rt.hora_inicio is not null and rt.hora_finalizacion is not null then 'Finalizado'
+          when rt.hora_finalizacion is not null then 'Finalizado'
+          when rt.hora_inicio is not null and rt.hora_finalizacion is null then 'En Proceso'
+          when rt.hora_ingreso is not null and rt.hora_inicio is null then 'En Espera'
+        end as estado
+        from trabajos as t
+        join registro_tiempos as rt on t.id = rt.trabajo_id
+        where t.fecha >= now() - interval '1 month' or rt.hora_inicio is not null and rt.hora_finalizacion is null
+      )
+      select
+        count(estado) as cantidad,
+        estado,
+        semana_inicio
+      from semanas
+      where semana_inicio >= now() - interval '1 week'
+      group by estado, semana_inicio
+      order by estado, semana_inicio
+  `
+
     // Ejecuta ambas consultas
     const semanas = await this.findByQuery(sql2)
     const pagos = await this.findByQuery(sql)
+    const carrosEstado = await this.findByQuery(sqlCarrosEstado)
 
     // Retorna el resultado en un objeto
-    const res = { semanas, pagos }
+    const res = { semanas, pagos, carrosEstado }
     return res
   }
 
