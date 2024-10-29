@@ -12,7 +12,7 @@ class NavModel extends DefaultModel {
       delete item.parent_title
     })
 
-    return result
+    return result.reverse()
   }
   async findAllCustom() {
     const sql = `
