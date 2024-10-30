@@ -13,7 +13,7 @@ class Administracion extends DefaultModel {
         return res[0].tiempo
       })
       .catch(() => {
-        return 3600
+        return 36000
       })
     return datos
   }
