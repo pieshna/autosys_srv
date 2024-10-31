@@ -282,6 +282,55 @@ with semanas as (
     }
     return result
   }
+
+  async getTrabajoByTrabajador(uuidTrabajador: string) {
+    const sql = `
+    with semanas as (
+select concat(u.nombre,' ',u.apellido) as trabajador, concat(u2.nombre,' ',u2.apellido) as cliente,
+    case
+      when rt.hora_inicio is not null and rt.hora_finalizacion is not null then 'Finalizado'
+      when rt.hora_finalizacion is not null then 'Finalizado'
+      when rt.hora_inicio is not null and rt.hora_finalizacion is null then 'En Proceso'
+      when rt.hora_ingreso is not null and rt.hora_inicio is null then 'En Espera'
+    end as estado,
+    date_trunc('week', t.fecha) as semana_inicio,
+    v.marca, v.modelo,
+     v.placa,
+    COALESCE(t.diagnostico_mecanico,t.descripcion,t.problema_cliente) as descripcion,
+     coalesce(round((t.total_pagar * tr.porcentaje*0.01),2),0) as pago_de_trabajo,
+     t.fecha
+    from trabajos as t
+    join trabajadores as tr on tr.id = t.trabajador_id
+    left join registro_tiempos as rt on rt.trabajo_id = t.id
+    join usuarios as u on u.id = tr.usuario_id
+    join vehiculos as v on v.id = t.vehiculo_id
+    join clientes as c on c.id = v.cliente_id
+    join usuarios as u2 on u2.id = c.usuario_id
+    where tr.usuario_id = $1
+        and(t.fecha >= now() - interval '1 month' or rt.hora_inicio is not null and rt.hora_finalizacion is null) 
+      )
+      select
+        *
+      from semanas
+      where semana_inicio >= now() - interval '1 week'
+      group by estado, semana_inicio, trabajador, cliente, marca, modelo, placa, descripcion, pago_de_trabajo, fecha
+      order by estado, semana_inicio
+    `
+    const res = await this.findByQuery(sql, [uuidTrabajador])
+
+    return res.map((r) => {
+      return {
+        ...r,
+        fecha: r.fecha
+          .toISOString()
+          .split('T')[0]
+          .split('-')
+          .reverse()
+          .join('/'),
+        descripcion: r.descripcion ?? 'Sin detalle'
+      }
+    })
+  }
 }
 
 export default new TrabajosModel()

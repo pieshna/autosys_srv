@@ -16,6 +16,14 @@ export const getTrabajo = asyncHandler(async (req: Request, res: Response) => {
   handleDataAndResponse(res, trabajo)
 })
 
+export const getTrabajoByTrabajador = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params
+    const trabajo = await TrabajoModel.getTrabajoByTrabajador(id)
+    handleDataAndResponse(res, trabajo)
+  }
+)
+
 export const createTrabajo = asyncHandler(
   async (req: Request, res: Response) => {
     const trabajo = await TrabajoModel.create(req.body)

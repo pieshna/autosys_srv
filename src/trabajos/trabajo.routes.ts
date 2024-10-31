@@ -5,6 +5,7 @@ import {
   deleteTrabajo,
   getDataForRecibo,
   getTrabajo,
+  getTrabajoByTrabajador,
   getTrabajos,
   getTrabajosDisponibles,
   getTrabajosPorSemana,
@@ -19,6 +20,7 @@ router.get('/', getTrabajos)
 router.get('/semana', getTrabajosPorSemana)
 router.get('/disponibles', getTrabajosDisponibles)
 router.get('/recibo/:id', getDataForRecibo)
+router.get('/trabajador/:id', getTrabajoByTrabajador)
 router.get('/:id', getTrabajo)
 router.post('/', schemaValidation(trabajoSchema), createTrabajo)
 router.put('/', updateProceso)
