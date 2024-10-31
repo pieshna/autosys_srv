@@ -141,8 +141,33 @@ with semanas as (
     const pagos = (await this.findByQuery(sql))?.reverse()
     const carrosEstado = (await this.findByQuery(sqlCarrosEstado))?.reverse()
 
+    //ganancias por semana
+    const sqlGanancias = `
+    with semanas as (
+      select
+        t.id,
+        date_trunc('week', t.fecha) as semana_inicio,
+        (t.total_pagar - (t.total_pagar * (tr.porcentaje * 0.01))) as ganancias,
+        t.total_pagar,
+        (t.total_pagar * (tr.porcentaje * 0.01)) as pago_trabajador
+      from trabajos as t
+      join trabajadores as tr on tr.id = t.trabajador_id
+      where t.fecha >= now() - interval '1 month'
+    )
+    select
+      semana_inicio,
+      coalesce(round(sum(total_pagar),2), 0.00) as total,
+      coalesce(round(sum(ganancias),2), 0.00) as ganancias,
+      coalesce(round(sum(pago_trabajador),2), 0.00) as pago_trabajador
+    from semanas
+    where semana_inicio >= now() - interval '1 week'
+    group by semana_inicio
+    order by semana_inicio
+    `
+    const ganancias = (await this.findByQuery(sqlGanancias))?.reverse()
+
     // Retorna el resultado en un objeto
-    const res = { semanas, pagos, carrosEstado }
+    const res = { semanas, pagos, carrosEstado, ganancias }
     return res
   }
 
