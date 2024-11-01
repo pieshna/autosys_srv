@@ -103,7 +103,7 @@ class TrabajosModel extends DefaultModel {
       select
         trabajador,
         semana_inicio,
-        coalesce(sum(pago_trabajador), 0.00) as pago_trabajador -- Suma el pago por trabajador por semana
+        coalesce(round(sum(pago_trabajador),2), 0.00) as pago_trabajador -- Suma el pago por trabajador por semana
       from semanas
       where semana_inicio >= now() - interval '1 week'
       group by trabajador, semana_inicio
